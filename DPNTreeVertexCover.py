@@ -1,5 +1,8 @@
 # Python3 implementation for the above approach
 import time
+import gc
+import resource
+
 
 def addEdge(adj, x, y):
     adj[x].append(y)
@@ -49,16 +52,20 @@ def start_dp(filename: str) -> None:
                 addEdge(adj=adj, x=(i + 1), y=val)
         
         start = time.time()
+        start_mem = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
         minSizeVertexCover(adj=adj, N=N)
+        end_mem = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
         end = time.time()
-
+        print(f"It takes {(end_mem - start_mem):.3f} bytes to compute the vertex cover of {N} vertices")
         print(f"It takes {(end - start):.3f} s to compute the vertex cover of {N} vertices\n")
+    
+    gc.collect()
 
 
 def main():
-    start_dp("nary_tree_100.txt")
-    start_dp("nary_tree_300.txt")
-    start_dp("nary_tree_900.txt")
+    # start_dp("nary_tree_100.txt")
+    # start_dp("nary_tree_300.txt")
+    # start_dp("nary_tree_900.txt")
     start_dp("nary_tree_10000.txt")
     start_dp("nary_tree_100000.txt")
     start_dp("nary_tree_1000000.txt")

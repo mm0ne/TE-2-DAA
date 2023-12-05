@@ -19,6 +19,7 @@ import networkx as nx
 import operator
 import time
 import os
+# import resource
 
 
 # FUNCTION FOR PARSING INPUT FILES
@@ -251,8 +252,11 @@ def main(inputfile, output_dir, cutoff, randSeed):
     print("No of nodes in G:", g.number_of_nodes(), "\nNo of Edges in G:", g.number_of_edges())
 
     start = time.time()
+    # start_mem = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
     Sol_VC, times = BnB(g, cutoff)
+    # end_mem = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
     end = time.time()
+    # print(f"It takes {(end_mem - start_mem):.3f} bytes to compute the vertex cover")
     print(f"IT takes {(end - start):.3f} s to calculate vertex cover\n")
 
     # DELETE FALSE NODES (STATE=0) IN OBTAINED SoL_VC
